@@ -1,18 +1,20 @@
-from flask import Flask
-import requests
-import bleach
+from flask import Flask, request
+from BeautifulSoup import BeautifulSoup as Soup
+import wikipedia, string
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-	r = requests.get('http://en.wikipedia.org/wiki/HTTP_message_body')
-	attrs = {'*': ['style']}
-	tags = ['p', 'em', 'strong', 'script', 'style', 'link']
-	styles = ['color', 'font-weight']
-	sanitized_result = bleach.clean( r.text, attrs, tags, styles)
-	return sanitized_result
+@app.route('/<query>')
+def index(query):
+	try:
+		text = wikipedia.summary(query)
+	except Exception as e:
+		text = "DisambiguationError: Be more specific and please try again."
+	allowed_chars = string.letters + string.digits + " .?!" # 66 chars total
+	filtered_summary = ''.join( char for char in text if  char in allowed_chars )
+	jsonify = """{ "summary" : \"""" + filtered_summary + "\" }"
+	return jsonify
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
