@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 import requests
 import bleach
 
@@ -6,13 +6,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-	r = requests.get('http://en.wikipedia.org/wiki/HTTP_message_body')
+	url = request.args.get('url')
+	r = requests.get(url)
 	attrs = {'*': ['style']}
 	tags = ['p', 'em', 'strong', 'script', 'style', 'link']
 	styles = ['color', 'font-weight']
-	sanitized_result = bleach.clean( r.text, attrs, tags, styles)
-	return sanitized_result
-
+	result = bleach.clean( r.text, attrs, tags, styles, strip=True)
+	sanitized_result = {'data':{'url':url, 'body': [result]}}
+	return jsonify(sanitized_result)
 
 if __name__ == '__main__':
     app.run()
