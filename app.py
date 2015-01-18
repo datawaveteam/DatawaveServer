@@ -36,9 +36,8 @@ def index(query):
 		text = "DisambiguationError: Be more specific and please try again."
 	allowed_chars = string.letters + string.digits + " .?!" # 66 chars total
 	filtered_summary = ''.join( char for char in text if  char in allowed_chars )
-	result = """{ "summary" : \"""" + filtered_summary + "\" }"
 	# Utilizing the jsonify module from flask. 
-	return jsonify(result)
+	return jsonify({'summary': filtered_summary})
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
