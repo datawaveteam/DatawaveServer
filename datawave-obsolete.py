@@ -16,7 +16,7 @@ def stream():
 	attrs = {'*': ['style']}
 	tags = ['p', 'em', 'strong', 'script', 'style', 'link']
 	styles = ['color', 'font-weight']
-	result = bleach.clean( r.text, attrs, tags, styles, strip=True)
+	result = bleach.clean( r.text, attrs, tags, styles)
 	sanitized_result = {'data':{'url':url, 'body': [result]}}
 	return jsonify(sanitized_result)
 
