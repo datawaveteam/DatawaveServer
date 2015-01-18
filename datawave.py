@@ -6,6 +6,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
+	return 'Hello There, from DataWave.'
+
+@app.route('/stream')
+def stream():
 	url = request.args.get('url')
 	r = requests.get(url)
 	attrs = {'*': ['style']}
