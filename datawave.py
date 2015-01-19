@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 import requests
 import bleach
@@ -20,4 +21,4 @@ def stream():
 	return jsonify(sanitized_result)
 
 if __name__ == '__main__':
-    app.run()
+	app.run(debug=True)

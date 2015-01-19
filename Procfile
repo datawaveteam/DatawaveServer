@@ -1,1 +1,1 @@
-web: gunicorn datawave:app --log-file -
+web: gunicorn datawave:app --log-file=-
